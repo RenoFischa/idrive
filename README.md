@@ -2,7 +2,7 @@
 **IDrive Backup Docker image**
 
 IDrive services persist, so no need to relogin after each restart of the container.\
-It also works in TrueNAS SCALE. Configuration exapmple is below.
+It also works in TrueNAS SCALE. Configuration example is below.
 
 ## Requirements
 * Docker installed
