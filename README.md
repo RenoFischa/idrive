@@ -4,7 +4,7 @@
 Docker Hub: https://hub.docker.com/r/renofischa/idrive
 
 IDrive services persist, so no need to relogin after each restart of the container.\
-It also works in TrueNAS SCALE. Configuration example is below.
+It also works in TrueNAS SCALE and on unRAID. Configuration examples are below.
 
 ## Requirements
 * Docker installed
@@ -54,6 +54,39 @@ click on Apps -> Launch Docker image
 * Update Strategy: Kill existing pods before creating new ones
 
 leave everything else on default
+
+## unRAID example
+Save the following template as My-iDrive.xml under your boot usb drive in /Config/Plugins/dockerMan/templates-user/
+
+````
+<?xml version="1.0"?><Container version="2">
+<Name>iDrive</Name>  
+<Repository>renofischa/idrive</Repository>  
+<Registry>https://hub.docker.com/r/renofischa/idrive</Registry>  
+<Network>host</Network>  
+<MyIP/>  
+<Shell>sh</Shell>
+<Privileged>false</Privileged>
+<Support/>
+<Project/>
+<Overview/>
+<Category/>
+<WebUI/>
+<TemplateURL/>
+<Icon>https://static.idriveonlinebackup.com/source/images/favicon.ico</Icon>
+<ExtraParams/>
+<PostArgs/>
+<CPUset/>  
+<DateInstalled>1676085032</DateInstalled>  
+<DonateText/>  <DonateLink/>  
+<Requires>/work/IDriveForLinux/scripts/Idrivelib/dependencies</Requires>  
+<Config Name="Host Path 1" Target="/work/IDriveForLinux/idriveIt" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/idriveIt</Config>  
+<Config Name="Host Path 2" Target="/home/backup" Default="" Mode="ro" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/backups/</Config>  
+<Config Name="Host Key 1" Target="TZ" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
+<Config Name="Host Path 3" Target="/work/IDriveForLinux/scripts/Idrivelib/dependencies" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/dependencies</Config>  
+<Config Name="Host Path 4" Target="/mnt/files" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/files</Config>
+</Container>
+````
 
 ## Configuration after first start
 Configure your IDrive account after first start.
