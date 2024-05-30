@@ -130,4 +130,4 @@ In Version 3 idrive for Linux switched to a Bin package-based Installer.
     2) Edit your account details
     3) Exit
     ````
-  Settings from v2 should still be there. Scheduled Jobs must be configured again.
+  + Settings from v2 should still be there. Scheduled Jobs must be configured again.
