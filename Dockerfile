@@ -1,10 +1,7 @@
 FROM ubuntu:22.04
 
 # Install packages
-RUN apt-get update && apt-get -y install vim unzip curl libfile-spec-native-perl
-RUN apt-get update && apt-get -y install build-essential sqlite3 perl-doc libdbi-perl libdbd-sqlite3-perl
-RUN cpan install common::sense
-RUN cpan install Linux::Inotify2
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends vim curl wget cron nano ca-certificates
 
 # Timezone (no prompt)
 ARG TZ "Europe/Vienna"
@@ -14,23 +11,23 @@ RUN echo "$tz" > /etc/timezone
 RUN rm -f /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-WORKDIR /work
+WORKDIR /opt
 
 # Copy entrypoint script
 COPY entrypoint.sh .
 RUN chmod a+x entrypoint.sh
 
-RUN curl -O https://www.idrivedownloads.com/downloads/linux/download-for-linux/LinuxScripts/IDriveForLinux.zip && \
-    unzip IDriveForLinux.zip && \
-    rm IDriveForLinux.zip
+RUN wget https://www.idrivedownloads.com/downloads/linux/download-for-linux/linux-bin/idriveforlinux.bin && \
+    chmod a+x idriveforlinux.bin && \
+    ./idriveforlinux.bin --install && \
+    rm idriveforlinux.bin && \
+    mv /opt/IDriveForLinux/idriveIt/ /opt/IDriveForLinux/idriveIt-orig
 
-WORKDIR /work/IDriveForLinux/scripts
-
-RUN chmod a+x *.pl
-
-RUN ln -s /work/IDriveForLinux/scripts/cron.pl /etc/idrivecron.pl
+WORKDIR /opt/IDriveForLinux/bin
 
 COPY .serviceLocation .
+
+RUN ln -s /opt/IDriveForLinux/bin/idrive /etc/idrivecron
 
 RUN mkdir -p /mnt/files && \
     touch /mnt/files/idrivecron && \
@@ -44,4 +41,4 @@ RUN mkdir -p /mnt/files && \
 RUN mkdir -p /mnt/backup
 
 # Run the command on container startup
-ENTRYPOINT ["/work/entrypoint.sh"]
+ENTRYPOINT ["/opt/entrypoint.sh"]

@@ -94,3 +94,40 @@ Configure your IDrive account after first start.
 * Run ````./account_setting.pl````
 * Login with your account details and configure other basic settings. Important is your Backup location.
 * Now you should see your container in your IDrive dashboard.
+
+## Update v2 to v3
+In Version 3 idrive for Linux switched to a Bin package-based Installer.
+* Container tag 3.2 contains the new version, tag latest is still the old one
+* steps to update a container to the new Version:
+  + change mount path of volume ````config```` to  ````/opt/IDriveForLinux/idriveIt````
+  + remove volume ````dependencies````
+  + Should look like this in docker-compose
+  ````
+  services:
+    idrive:
+      container_name: idrive
+      image: renofischa/idrive:3.2
+      restart: unless-stopped
+      volumes:
+        - config:/opt/IDriveForLinux/idriveIt
+        - files:/mnt/files
+        - $BACKUPDIR:/mnt/backup:ro
+      environment:
+        - TZ=$TZ
+        
+  volumes:
+    config:
+    files:
+  ````
+  + Exec into container
+  + Run ````./idrive --account-setting````
+  + Login again with your account details.
+  + At this question, you can enter 3 to exit:
+    ````
+    Do you want to:
+
+    1) Reconfigure your account freshly
+    2) Edit your account details
+    3) Exit
+    ````
+  Settings from v2 should still be there. Scheduled Jobs must be configured again.
