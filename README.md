@@ -18,8 +18,7 @@ services:
     image: renofischa/idrive:latest
     restart: unless-stopped
     volumes:
-      - config:/work/IDriveForLinux/idriveIt
-      - dependencies:/work/IDriveForLinux/scripts/Idrivelib/dependencies
+      - config:/opt/IDriveForLinux/idriveIt
       - files:/mnt/files
       - $BACKUPDIR:/mnt/backup:ro
     environment:
@@ -30,7 +29,7 @@ volumes:
   dependencies:
   files:
 ````
-* volumes config, dependencies and files are necessary for persisting account settings and IDrive services.
+* volumes config and files are necessary for persisting account settings and IDrive services.
 * $BACKUPDIR points to the local path you need to backup
 * Optional timezone environment variable, default is set to Europe/Vienna in dockerfile
 
@@ -46,11 +45,10 @@ click on Apps -> Launch Docker image
     ![image](https://user-images.githubusercontent.com/32832850/200178883-1e49489c-19be-4513-a0b1-268d587a32a4.png)
   + configure volumes for persisting files:
     ````
-    config:/work/IDriveForLinux/idriveIt
-    dependencies:/work/IDriveForLinux/scripts/Idrivelib/dependencies
+    config:/opt/IDriveForLinux/idriveIt
     files:/mnt/files
     ````
-    ![image](https://user-images.githubusercontent.com/32832850/200178452-5c6cb000-b5e1-4e84-8e20-1d3ca19bd606.png)
+    ![image](https://github.com/user-attachments/assets/c7264060-161f-4441-9f3b-2b3fdb579045)
 * Update Strategy: Kill existing pods before creating new ones
 
 leave everything else on default
@@ -79,12 +77,10 @@ Save the following template as My-iDrive.xml under your boot usb drive in /Confi
 <CPUset/>  
 <DateInstalled>1676085032</DateInstalled>  
 <DonateText/>  <DonateLink/>  
-<Requires>/work/IDriveForLinux/scripts/Idrivelib/dependencies</Requires>  
-<Config Name="Host Path 1" Target="/work/IDriveForLinux/idriveIt" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/idriveIt</Config>  
+<Config Name="Host Path 1" Target="/opt/IDriveForLinux/idriveIt" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/idriveIt</Config>  
 <Config Name="Host Path 2" Target="/home/backup" Default="" Mode="ro" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/backups/</Config>  
 <Config Name="Host Key 1" Target="TZ" Default="" Mode="" Description="" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
-<Config Name="Host Path 3" Target="/work/IDriveForLinux/scripts/Idrivelib/dependencies" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/dependencies</Config>  
-<Config Name="Host Path 4" Target="/mnt/files" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/files</Config>
+<Config Name="Host Path 3" Target="/mnt/files" Default="" Mode="rw" Description="" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/idrive/files</Config>
 </Container>
 ````
 
@@ -97,7 +93,7 @@ Configure your IDrive account after first start.
 
 ## Update v2 to v3
 In Version 3 idrive for Linux switched to a Bin package-based Installer.
-* Container tag 3.2 contains the new version, tag latest is still the old one
+* Container tag latest now contains v3
 * steps to update a container to the new Version:
   + change mount path of volume ````config```` to  ````/opt/IDriveForLinux/idriveIt````
   + remove volume ````dependencies````
@@ -106,7 +102,7 @@ In Version 3 idrive for Linux switched to a Bin package-based Installer.
   services:
     idrive:
       container_name: idrive
-      image: renofischa/idrive:3.2
+      image: renofischa/idrive:latest
       restart: unless-stopped
       volumes:
         - config:/opt/IDriveForLinux/idriveIt
