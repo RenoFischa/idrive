@@ -1,3 +1,11 @@
+# Unmaintained Notice
+
+This project, [RenoFischa/idrive](https://github.com/RenoFischa/idrive), is no longer maintained as I have moved away from using TrueNAS and Docker for backups to iDrive.
+
+For those currently using this project, I recommend transitioning to the actively maintained alternative:  
+- Repository: [snorre-k/idrive-docker](https://github.com/snorre-k/idrive-docker)  
+- Docker Container: `snorre0815/idrive-docker:latest`
+
 # idrive
 **IDrive Backup Docker image**
 
